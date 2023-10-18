@@ -142,6 +142,19 @@ func (*ArrayStruct) PopInt(array []int) []int {
 	return array
 }
 
+func (*ArrayStruct) Slice(start, end int, array []interface{}) []interface{} {
+	if array == nil {
+		return nil
+	}
+	var newArray []interface{}
+	for i := 0; i < len(array); i++ {
+		if i >= start && i < end {
+			newArray = append(newArray, array[i])
+		}
+	}
+	return newArray
+}
+
 func (*ArrayStruct) PopString(array []string) []string {
 	if array == nil {
 		return nil
