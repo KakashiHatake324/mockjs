@@ -2,6 +2,7 @@ package mockjs
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"net/url"
 	"strconv"
 	"time"
@@ -12,6 +13,20 @@ var Window Windows
 type Windows struct {
 	StartTime int64 // lets make it time.now().milli - like 1000-500 ms for page load time?
 	WindowFunctions
+	JSON JSON
+}
+
+type JSON struct {
+}
+
+func (*JSON) Stringify(s interface{}) string {
+	d, _ := json.Marshal(s)
+	return string(d)
+}
+
+func (*JSON) Parse(s string) interface{} {
+	var f interface{}
+	return json.Unmarshal([]byte(s), &f)
 }
 
 type WindowFunctions interface {
