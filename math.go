@@ -1,6 +1,7 @@
 package mockjs
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 )
@@ -112,14 +113,18 @@ func (*MathStruct) Pow(o, p float64) float64 {
 // Returns a string representation of an object.
 func (*MathStruct) ToString(v interface{}) string {
 	switch c := v.(type) {
-	case float64:
-		return strconv.FormatFloat(c, 'f', -1, 64)
 	case int:
 		return strconv.Itoa(c)
 	case int32:
 		return strconv.Itoa(int(c))
 	case int64:
 		return strconv.Itoa(int(c))
+	case float32:
+		return fmt.Sprintf("%f", c)
+	case float64:
+		return strconv.FormatFloat(c, 'f', -1, 64)
+	case string:
+		return c
 	default:
 		return ""
 	}
@@ -128,14 +133,16 @@ func (*MathStruct) ToString(v interface{}) string {
 // Returns a float64 representation of an object.
 func (*MathStruct) ToFloat64(v interface{}) float64 {
 	switch c := v.(type) {
-	case float64:
-		return c
 	case int:
 		return float64(c)
 	case int32:
 		return float64(c)
 	case int64:
 		return float64(c)
+	case float32:
+		return float64(c)
+	case float64:
+		return c
 	case string:
 		f, _ := strconv.ParseFloat(c, 64)
 		return f
@@ -147,14 +154,19 @@ func (*MathStruct) ToFloat64(v interface{}) float64 {
 // Returns an int representation of an object.
 func (*MathStruct) ToInt(v interface{}) int {
 	switch c := v.(type) {
-	case float64:
-		return int(c)
 	case int:
 		return int(c)
 	case int32:
 		return int(c)
 	case int64:
 		return int(c)
+	case float32:
+		return int(c)
+	case float64:
+		return int(c)
+	case string:
+		r, _ := strconv.Atoi(c)
+		return r
 	default:
 		return 0
 	}
