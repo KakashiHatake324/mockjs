@@ -15,22 +15,22 @@ Math.max_Example := mockjs.Math.Max([]int{2,3,5,6,7})
 ```go
 window := mockjs.Window.InitWindow()
 
-Window.btoa_Example := window.Btoa("hello world")
-Window.atob_Example := window.Btoa("aGVsbG8gd29ybGQ=")
-Window.newDate_Example := window.NewDate() // int64 timestamp in unix milli
-Window.newDateString_Example := window.NewDateString()
-Window.encodeUriComponent_Example := window.EncodeURIComponent("https://github.com/")
-Window.charcodeAt_Example := window.CharcodeAt("charstring",3)
-Window.performanceNow_Example := window.Performance() // time since init window in ms
-Window.parseInt_Example := mockjs.Math.ParseInt(3, 10)
+Window_btoa_Example := window.Btoa("hello world")
+Window_atob_Example := window.Atob("aGVsbG8gd29ybGQ=")
+Window_newDate_Example := window.NewDate() // int64 timestamp in unix milli
+Window_newDateString_Example := window.NewDateString()
+Window_encodeUriComponent_Example := window.EncodeURIComponent("https://github.com/")
+Window_charcodeAt_Example := window.CharcodeAt("charstring",3)
+Window_performanceNow_Example := window.Performance() // time since init window in ms
+Window_parseInt_Example := mockjs.Math.ParseInt(3, 10)
 ```
 
 `ARRAY FUNCTIONS`
 ```go
-Array.map_Example := mockjs.Array.Map([]interface{"4",5,"2",6,7,8}, mockjs.Number)
-Array.pop_Example := mockjs.Array.Pop([]interface{"4",5,"2",6,7,8})
-Array.pop_Example := mockjs.Array.PopString([]interface{"4","2"})
-Array.pop_Example := mockjs.Array.PopInt([]interface{5,6,7,8})
+Array_map_Example := mockjs.Array.Map([]interface{"4",5,"2",6,7,8}, mockjs.Number)
+Array_pop_Example := mockjs.Array.Pop([]interface{"4",5,"2",6,7,8})
+Array_pop_Example := mockjs.Array.PopString([]interface{"4","2"})
+Array_pop_Example := mockjs.Array.PopInt([]interface{5,6,7,8})
 ```
 
 `BUILT IN FUNCTIONS`
