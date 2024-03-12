@@ -1,8 +1,12 @@
 package mockjs
 
 import (
+	"crypto/sha1"
+	"crypto/sha256"
+	"crypto/sha512"
 	"encoding/base64"
 	"encoding/json"
+	"hash"
 	"net/url"
 	"strconv"
 	"time"
@@ -55,6 +59,23 @@ func (*Windows) Btoa(s string) string {
 func (*Windows) Atob(s string) string {
 	decoded, _ := base64.StdEncoding.DecodeString(s)
 	return string(decoded)
+}
+
+func (*Windows) Sha(sh int, s string) string {
+	var h hash.Hash
+	switch sh {
+	case 1:
+		h = sha1.New()
+	case 256:
+		h = sha256.New()
+	case 512:
+		h = sha512.New()
+	default:
+		h = sha256.New()
+	}
+	h.Write([]byte(s))
+	bs := h.Sum(nil)
+	return string(bs)
 }
 
 func (*Windows) EncodeURIComponent(s string) string {
