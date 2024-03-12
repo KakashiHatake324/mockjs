@@ -6,6 +6,7 @@ import (
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"hash"
 	"net/url"
 	"strconv"
@@ -75,7 +76,7 @@ func (*Windows) Sha(sh int, s string) string {
 	}
 	h.Write([]byte(s))
 	bs := h.Sum(nil)
-	return string(bs)
+	return fmt.Sprintf("%x", bs)
 }
 
 func (*Windows) EncodeURIComponent(s string) string {
