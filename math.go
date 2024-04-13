@@ -172,6 +172,27 @@ func (*MathStruct) ToInt(v interface{}) int {
 	}
 }
 
+// Returns an int representation of an object.
+func (*MathStruct) ToInt64(v interface{}) int64 {
+	switch c := v.(type) {
+	case int:
+		return int64(c)
+	case int32:
+		return int64(c)
+	case int64:
+		return c
+	case float32:
+		return int64(c)
+	case float64:
+		return int64(c)
+	case string:
+		r, _ := strconv.ParseInt(c, 10, 64)
+		return r
+	default:
+		return 0
+	}
+}
+
 func (*MathStruct) ParseInt(v, c interface{}) int64 {
 	solved, _ := strconv.ParseInt(Math.ToString(Math.ToInt(v)), Math.ToInt(c), 64)
 	return solved
