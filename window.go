@@ -1,10 +1,12 @@
 package mockjs
 
 import (
+	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"hash"
@@ -77,6 +79,12 @@ func (*Windows) Sha(sh int, s string) string {
 	h.Write([]byte(s))
 	bs := h.Sum(nil)
 	return fmt.Sprintf("%x", bs)
+}
+
+func (*Windows) Md5(text string) string {
+	hash := md5.New()
+	hash.Write([]byte(text))
+	return hex.EncodeToString(hash.Sum(nil))
 }
 
 func (*Windows) EncodeURIComponent(s string) string {
