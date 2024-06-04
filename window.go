@@ -12,6 +12,7 @@ import (
 	"hash"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -62,6 +63,21 @@ func (*Windows) Btoa(s string) string {
 func (*Windows) Atob(s string) string {
 	decoded, _ := base64.StdEncoding.DecodeString(s)
 	return string(decoded)
+}
+
+func (*Windows) TypeOf(v interface{}) string {
+	typeOf := fmt.Sprintf("%T", v)
+	typeOf = strings.ReplaceAll(typeOf, "bool", "boolean")
+	typeOf = strings.ReplaceAll(typeOf, "int", "number")
+	return typeOf
+}
+
+func (*Windows) FromCharcode(v []any) string {
+	var result string
+	for _, codePoint := range v {
+		result += string(rune(Math.ToInt64(codePoint)))
+	}
+	return result
 }
 
 func (*Windows) Sha(sh int, s string) string {
