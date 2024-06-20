@@ -23,6 +23,7 @@ type MathFunctions interface {
 	ToFloat64(interface{})
 	Max([]interface{}) int
 	Ceil(float64)
+	Cos(float64)
 	Pow(float64, float64)
 }
 
@@ -65,6 +66,10 @@ func (*MathStruct) Sqrt(sqrt float64) float64 {
 // Returns the smallest integer greater than or equal to its numeric argument.
 func (*MathStruct) Ceil(c float64) float64 {
 	return math.Ceil(c)
+}
+
+func (*MathStruct) Cos(c float64) float64 {
+	return math.Cos(c)
 }
 
 // Returns the larger of a set of supplied numeric expressions.
