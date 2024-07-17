@@ -120,10 +120,16 @@ func (*MathStruct) ToString(v interface{}) string {
 	switch c := v.(type) {
 	case int:
 		return strconv.Itoa(c)
+	case uint:
+		return strconv.FormatUint(uint64(c), 10)
 	case int32:
 		return strconv.Itoa(int(c))
+	case uint32:
+		return strconv.FormatUint(uint64(c), 10)
 	case int64:
 		return strconv.Itoa(int(c))
+	case uint64:
+		return strconv.FormatUint(uint64(c), 10)
 	case float32:
 		return fmt.Sprintf("%f", c)
 	case float64:
@@ -131,7 +137,7 @@ func (*MathStruct) ToString(v interface{}) string {
 	case string:
 		return c
 	default:
-		return ""
+		return fmt.Sprintf("%s", c)
 	}
 }
 
