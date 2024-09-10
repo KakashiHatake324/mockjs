@@ -41,13 +41,13 @@ func (*MathStruct) Random() float64 {
 func (*MathStruct) Floor(max interface{}) float64 {
 	switch c := max.(type) {
 	case float64:
-		return float64(Random_range(0, int(c)))
+		return math.Floor(c)
 	case int:
-		return float64(Random_range(0, c))
+		return math.Floor(float64(c))
 	case int32:
-		return float64(Random_range(0, int(c)))
+		return math.Floor(float64(c))
 	case int64:
-		return float64(Random_range(0, int(c)))
+		return math.Floor(float64(c))
 	default:
 		return 0
 	}
