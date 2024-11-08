@@ -16,9 +16,7 @@ import (
 	"time"
 )
 
-var Window Windows
-
-type Windows struct {
+type Window struct {
 	StartTime int64 // lets make it time.now().milli - like 1000-500 ms for page load time?
 	WindowFunctions
 	JSON JSON
@@ -26,6 +24,8 @@ type Windows struct {
 
 type JSON struct {
 }
+
+type Interval chan bool
 
 func (*JSON) Stringify(s interface{}) string {
 	d, _ := json.Marshal(s)
@@ -48,31 +48,31 @@ type WindowFunctions interface {
 	Performance() int64
 }
 
-func InitWindow() *Windows {
-	return &Windows{
+func InitWindow() *Window {
+	return &Window{
 		StartTime: time.Now().UnixMilli(),
 	}
 }
 
-func (*Windows) Btoa(s string) string {
+func (w *Window) Btoa(s string) string {
 	data := []byte(s)
 	str := base64.StdEncoding.EncodeToString(data)
 	return str
 }
 
-func (*Windows) Atob(s string) string {
+func (w *Window) Atob(s string) string {
 	decoded, _ := base64.StdEncoding.DecodeString(s)
 	return string(decoded)
 }
 
-func (*Windows) TypeOf(v interface{}) string {
+func (w *Window) TypeOf(v interface{}) string {
 	typeOf := fmt.Sprintf("%T", v)
 	typeOf = strings.ReplaceAll(typeOf, "bool", "boolean")
 	typeOf = strings.ReplaceAll(typeOf, "int", "number")
 	return typeOf
 }
 
-func (*Windows) FromCharcode(v []any) string {
+func (w *Window) FromCharcode(v []any) string {
 	var result string
 	for _, codePoint := range v {
 		result += string(rune(Math.ToInt64(codePoint)))
@@ -80,7 +80,7 @@ func (*Windows) FromCharcode(v []any) string {
 	return result
 }
 
-func (*Windows) Sha(sh int, s string) string {
+func (w *Window) Sha(sh int, s string) string {
 	var h hash.Hash
 	switch sh {
 	case 1:
@@ -97,17 +97,17 @@ func (*Windows) Sha(sh int, s string) string {
 	return fmt.Sprintf("%x", bs)
 }
 
-func (*Windows) Md5(text string) string {
+func (w *Window) Md5(text string) string {
 	hash := md5.New()
 	hash.Write([]byte(text))
 	return hex.EncodeToString(hash.Sum(nil))
 }
 
-func (*Windows) EncodeURIComponent(s string) string {
+func (w *Window) EncodeURIComponent(s string) string {
 	return url.QueryEscape(s)
 }
 
-func (*Windows) CharcodeAt(s string, n int) int {
+func (w *Window) CharcodeAt(s string, n int) int {
 	// Convert the string to a rune slice
 	runes := []rune(s)
 	// Check if the index is within bounds
@@ -120,16 +120,41 @@ func (*Windows) CharcodeAt(s string, n int) int {
 }
 
 // new date timestamp
-func (*Windows) NewDate() int64 {
+func (w *Window) NewDate() int64 {
 	return time.Now().UnixMilli()
 }
 
 // new date string timestamp
-func (*Windows) NewDateString() string {
+func (w *Window) NewDateString() string {
 	return strconv.FormatInt(time.Now().UnixMilli(), 10)
 }
 
 // get the current performance
-func (w *Windows) Performance() int64 {
+func (w *Window) Performance() int64 {
 	return time.Now().UnixMilli() - w.StartTime
+}
+
+func (w *Window) SetTimeout(fn func(), delay time.Duration) *time.Timer {
+	return time.AfterFunc(delay, fn)
+}
+
+func (w *Window) SetInterval(fn func(), interval time.Duration) Interval {
+	ticker := time.NewTicker(interval)
+	stop := make(chan bool)
+	go func() {
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ticker.C:
+				fn()
+			case <-stop:
+				return
+			}
+		}
+	}()
+	return stop
+}
+
+func (w *Window) ClearInterval(interval Interval) {
+	interval <- true
 }
